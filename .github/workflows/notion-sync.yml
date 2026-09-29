@@ -33,7 +33,7 @@ jobs:
         with:
           app-id: ${{ vars.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          owner: sideproject2
+          owner: tomo-project
           repositories: |
             workflow
             infrastructure
@@ -53,7 +53,7 @@ jobs:
 
           script: |
             // GitHub Projects와 Notion 동기화 설정
-            const ORG = 'sideproject2';
+            const ORG = 'tomo-project';
 
             const PROJECTS = [
               { number: 1, area: '⚙️ 백엔드' },
@@ -61,10 +61,10 @@ jobs:
             ];
 
             const ALLOWED_REPOSITORIES = new Set([
-              'sideproject2/workflow',
-              'sideproject2/infrastructure',
-              'sideproject2/backend',
-              'sideproject2/frontend'
+              'tomo-project/workflow',
+              'tomo-project/infrastructure',
+              'tomo-project/backend',
+              'tomo-project/frontend'
             ]);
 
             // GitHub 로그인과 Notion 담당자 표시 이름 매핑
@@ -94,6 +94,7 @@ jobs:
               '👑 MVP': 'red',
               '📚 Docs': 'purple',
               '🔒 Security': 'gray',
+              '💎 3차 기능': 'blue',
               '🔥 2차 기능': 'orange',
               '🛠 Refactor': 'gray',
               '🧪 Test': 'green',

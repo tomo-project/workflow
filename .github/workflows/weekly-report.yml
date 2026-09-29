@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  ORG: sideproject2
+  ORG: tomo-project
   REPOSITORIES: backend,frontend,workflow,infrastructure
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         with:
           app-id: ${{ vars.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-          owner: sideproject2
+          owner: tomo-project
           repositories: |
             backend
             frontend
