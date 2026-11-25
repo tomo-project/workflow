@@ -168,7 +168,6 @@ jobs:
                 )
                 .join('');
 
-            const warnings = new Set();
 
             async function notion(
               path,
@@ -676,16 +675,10 @@ jobs:
                 },
               };
 
-              if (
-                names.length <= 1
-              ) {
-                props['담당자'] =
-                  select(names[0]);
-              } else {
-                warnings.add(
-                  `${issue.repository.nameWithOwner}#${issue.number}: 담당자가 여러 명이라 선택 속성에 저장하지 않았습니다. 기존 담당자 값은 유지합니다.`
-                );
-              }
+              props['담당자'] = {
+                multi_select: [...new Set(names.map(normalize))]
+                  .map(name => ({ name }))
+              };
 
               return props;
             }
@@ -858,7 +851,7 @@ jobs:
               '시작일': 'date',
               '종료일': 'date',
               '스프린트': 'rich_text',
-              '담당자': 'select',
+              '담당자': 'multi_select',
               '유형': 'multi_select',
               '영역': 'select',
               '관리 방식': 'select',
@@ -1092,15 +1085,9 @@ jobs:
             for (
               const props of expected.values()
             ) {
-              if (
-                props['담당자']
-                  ?.select
+              for (
+                const { name: assignee } of props['담당자'].multi_select
               ) {
-                const assignee =
-                  props[
-                    '담당자'
-                  ].select.name;
-
                 addOption(
                   '담당자',
                   assignee,
@@ -1287,14 +1274,6 @@ jobs:
               }
             }
 
-            for (
-              const warning of warnings
-            ) {
-              core.warning(
-                warning
-              );
-            }
-
             const retained =
               [
                 ...existing.keys()
@@ -1362,12 +1341,6 @@ jobs:
                   String(skipped)
                 ],
 
-                [
-                  '담당자 경고',
-                  String(
-                    warnings.size
-                  )
-                ],
               ])
               .addRaw(
                 '\n프로젝트 #1: 백엔드 / #3: 프론트엔드. 카드 자동 삭제 없음.\n'
